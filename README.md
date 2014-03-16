@@ -1,4 +1,4 @@
-# class_MiniRoute v.10
+# class_MiniRoute v. 1.0
 
 ## Small routing php class
 
