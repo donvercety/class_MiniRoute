@@ -2,6 +2,15 @@
 
 ## Small routing php class
 
+Version 1.0
+
+Works only for controller requesting.
+the value after the "/" calls back a controller. Which can be a separate
+class or a function.
+
+In the next version GET values will be added to have as many as you want
+after the "/controller" request.
+
 #### Main fiels:
 
 - Route.php
