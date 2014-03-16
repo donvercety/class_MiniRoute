@@ -1,4 +1,4 @@
-# class_MiniRoute
+# class_MiniRoute v.10
 
 ## Small routing php class
 
@@ -9,15 +9,29 @@
 
 #### Example files:
 
+- index.php
 - controllers/Home.php
 - controllers/About.php
 - controllers/Contact.php
 
+#### How to use:
+
 You may put **`Route.php`** wherever you want, but **`.htaccess`**
 must be in the site root folder!
 
-#### How to use:
+##### File: .htaccess
+```
+RewriteEngine On
+RewriteBase /projects/class_MiniRoute/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 
+RewriteRule ^(.+)$ index.php?uri=$1 [QSA,L]
+```
+
+Replace `/projects/class_MiniRoute/` with your site path.
+
+##### File: index.php
 ```php
 <?php
 
