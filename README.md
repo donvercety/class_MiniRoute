@@ -40,4 +40,6 @@ $route->add('/contact', 'Contact');
 $route->add('/map', function() {
     echo 'this is a func for map';
 });
+
+$route->submit();
 ```
