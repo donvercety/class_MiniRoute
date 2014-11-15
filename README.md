@@ -14,7 +14,7 @@ after the "/controller" request.
 #### Main fiels:
 
 - Route.php
-- .thaccess
+- .hthaccess
 
 #### Example files:
 
