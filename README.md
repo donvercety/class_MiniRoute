@@ -4,12 +4,10 @@
 
 Version 1.0
 
-Works only for controller requesting.
-the value after the "/" calls back a controller. Which can be a separate
-class or a function.
+Works only for controller requesting.  
+The value after the "/" calls back a controller. Which can be a separate class or a function.
 
-In the next version GET values will be added to have as many as you want
-after the "/controller" request.
+**mod_rewrite must be enabled for this to work!**
 
 #### Main fiels:
 
@@ -66,3 +64,6 @@ $route->add('/map', function() {
 
 $route->submit();
 ```
+
+**Up Next:** In the next version GET values will be added to have as many as you want
+after the "/controller" request.  
