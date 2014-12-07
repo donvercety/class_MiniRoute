@@ -1,11 +1,10 @@
 # php.class.MiniRoute v1.0
 
-## Small routing php class
-
 Version 1.0
 
-Works only for controller requesting.  
-The value after the "/" calls back a controller. Which can be a separate class or a function.
+The value after the " / " makes a controller callsback. Which can be a separate class or a function.  
+For example **http://mysite.com/contacts** will call the controller called **Contacts**. This controller  
+can be a php Class or a simple function.
 
 **mod_rewrite must be enabled for this to work!**
 
@@ -65,5 +64,3 @@ $route->add('/map', function() {
 $route->submit();
 ```
 
-**Up Next:** In the next version GET values will be added to have as many as you want
-after the "/controller" request.  
