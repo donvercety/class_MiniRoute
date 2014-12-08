@@ -1,6 +1,6 @@
 # php.class.MiniRoute v1.0
 
-Version 1.0
+Version 1.1
 
 The value after the " / " makes a controller callsback. Which can be a separate class or a function.  
 For example **http://mysite.com/contacts** will call the controller called **Contacts**. This controller  
