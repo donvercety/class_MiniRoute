@@ -1,12 +1,28 @@
-# php.class.MiniRoute v1.1
+# php.class.MiniRoute v2.0
 
-Version 1.1
+Version 2.0
 
-The value after the " / " makes a controller callsback. Which can be a separate class or a function.  
-For example **http://mysite.com/contacts** will call the controller called **Contacts**. This controller  
-can be a php Class or a simple function.
+The value after the " / " makes a controller callsback. Which can be a separate class or a function. For
+example **http://mysite.com/contacts** will call the controller called **Contacts**. This controller can be a php Class or a simple function. This functionality is from [v1.1](https://github.com/donvercety/php.class.MiniRoute/archive/v1.1.zip). In version 2.0 the ability to target a specific method in the class is implemented and also the ability to receive url parameters in the callbacks. The default targeted method is **index()**, so if you have:
 
-**mod_rewrite must be enabled for this to work!**
+
+```
+http://mysite.com/home
+```
+The class **Home** will be called and the method **index()** will be executed.
+
+```
+http://mysite.com/home/map
+```
+
+The class **Home** will be called and the method **map()** will be executed. If the method map is not present in the chosen class, this value "map" will be added to the params array.  
+
+The params array, is an array that will contain all the parameters after the controller/method:
+
+```
+http://mysite.com/home/map/1/NewYork
+```
+This will execute **Home** controller **map()** method and it will pass two parameters to that method.
 
 #### Main fiels:
 
@@ -65,3 +81,23 @@ $route->add('/map', function() {
 $route->submit();
 ```
 
+To be able to receive parameters in a Class method or function callback,  
+you need to pass an array parameter to that callback.
+
+```php
+$route->add('/about', function( $params = array() ) {
+	var_dump( $params );
+});
+```
+
+```php
+class About
+{
+	function index( $data = aray() )
+	{
+		var_dump( $data );
+	}
+}
+```
+
+## **mod_rewrite must be enabled for this to work!**
