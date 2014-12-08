@@ -43,6 +43,7 @@ Replace `/projects/class_MiniRoute/` with your site path.
 
 /* Including Route.php Class */
 require ('Route.php');
+
 /* Including controllers */
 require ('controllers/Home.php');
 require ('controllers/Contact.php');
