@@ -5,7 +5,8 @@
 class Route {
 
     private $_uri    = array(),
-            $_method = array();
+            $_method = array(),
+            $_match  = 0;
     
     /**
      * Building a collection of internal URL's to look for
@@ -47,6 +48,15 @@ class Route {
                 }
             }
         }
+        if( !$this->_match )
+        {
+            $this->notFound();
+        }
+    }
+    
+    public function notFound()
+    {
+        echo '404: Page not Found!';
     }
 
 }
