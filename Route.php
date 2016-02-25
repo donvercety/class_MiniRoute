@@ -1,6 +1,6 @@
 <?php
 /**
- * Mini Route v2.0
+ * Mini Route v2.1
  *
  * Implements function or class callbacks for a specific url.
  * It implements beautiful urls with '/' separation for parameters.
@@ -12,10 +12,11 @@
  */
 class Route {
     
-    private $_uri = array(),
+    private $_uri        = array(),
             $_controller = array(),
             $_method,
 			$_params,
+			$_getData,
             $_match = 0;
 
 	/**
@@ -36,12 +37,16 @@ class Route {
      * Makes the thing run
      */
     public function submit() {
+		
+		$get = filter_input_array(INPUT_GET);
 
-        // $_GET['uri'] comes form the .htaccess file
-        $uriGetParam = isset($_GET['uri']) ? '/' . $_GET['uri'] : '/';
+        // $get['uri'] comes form the .htaccess file
+        $uriGetParam = isset($get['uri']) ? '/' . $get['uri'] : '/';
 		
 		// unset 'uri' parameter to be able to work with the raw query string
-		unset($_GET['uri']);
+		unset($get['uri']);
+		
+		$this->_setGetData($get);
 
         // We trim the last '/' if there is any and we check that we do not trim the root '/'
         $uriGetParam = (strlen($uriGetParam) >= 2) ? rtrim($uriGetParam, "/") : $uriGetParam;
@@ -78,6 +83,10 @@ class Route {
 		}
     }
 
+	// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+	// :: Not Found 404
+	// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+	
     /**
      * Method to be executed on a non-existing url.
      * @return void
@@ -85,6 +94,26 @@ class Route {
     private function _notFound() {
         echo '404: Page not found!';
     }
+
+	// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+	// :: Getters and Setters
+	// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+	
+	/**
+	 * Set URI Parameters
+	 * @param array $_params
+	 */
+	private function _setParams($_params) {
+		$this->_params = $_params;
+	}
+	
+	/**
+	 * Set Query String Parameters
+	 * @param array $_get
+	 */
+	private function _setGetData($_get) {
+		$this->_getData = $_get;
+	}
 	
 	/**
 	 * Get URI Parameters
@@ -93,13 +122,13 @@ class Route {
 	public function getParams() {
 		return $this->_params;
 	}
-
+	
 	/**
-	 * Set URI Parameters
-	 * @param array $_params
+	 * Get Query String Parameters
+	 * @return type
 	 */
-	private function _setParams($_params) {
-		$this->_params = $_params;
+	public function getData() {
+		return $this->_getData;
 	}
 	
 	// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

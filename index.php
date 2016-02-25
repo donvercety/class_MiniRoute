@@ -11,8 +11,6 @@ $route = new Route();
 
 // when using Classes
 $route->add('/', 'Home');
-$route->add('/h', 'Home');
-
 $route->add('/about', 'About');
 $route->add('/contact', 'Contact');
 
@@ -22,8 +20,8 @@ $route->add('/map', function() use ($route) {
 	var_dump($route->getParams());
 });
 
-echo '<pre>';
-print_r($route);
-echo '</pre>';
+//echo '<pre>';
+//print_r($route);
+//echo '</pre>';
 
 $route->submit();

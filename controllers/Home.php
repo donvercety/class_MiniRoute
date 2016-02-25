@@ -2,12 +2,19 @@
 
 class Home {
 	
-    public function index() {
-        echo 'This is the home page. </br />';
-        $this->_other();
+    public function index(Route $route) {
+        echo '<h2>This is the home page. </h2>';
+		
+		echo "<code>Pretty parameters:</code>";
+		var_dump($route->getParams());
+		
+        $this->_homeOther($route);
     }
     
-    protected function _other() {
-        echo 'This is the _other function in home, lolz!';  
+    protected function _homeOther($route) {
+        echo '<h3>This is the <code>_homeOther()</code> method bout, lolz!</h3>';
+		
+		echo "<code>Query String parameters:</code>";
+        var_dump($route->getData());
     }
 }
