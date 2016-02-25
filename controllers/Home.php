@@ -1,7 +1,8 @@
 <?php
 
 class Home {
-    public function __construct() {
+	
+    public function index() {
         echo 'This is the home page. </br />';   
         $this->_other();
     }

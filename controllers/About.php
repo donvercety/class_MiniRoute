@@ -1,7 +1,8 @@
 <?php
 
 class About {
-    public function __construct() {
+
+    public function index() {
         echo 'This is the about page. </br />';   
         $this->_other();
     }

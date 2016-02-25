@@ -1,7 +1,8 @@
 <?php
 
 class Contact {
-    public function __construct() {
+
+    public function index() {
         echo 'This is the cintact page. </br />';   
         $this->_other();
     }
