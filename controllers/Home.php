@@ -3,7 +3,7 @@
 class Home {
 	
     public function index() {
-        echo 'This is the home page. </br />';   
+        echo 'This is the home page. </br />';
         $this->_other();
     }
     

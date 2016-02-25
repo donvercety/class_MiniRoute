@@ -2,8 +2,9 @@
 
 class About {
 
-    public function index() {
-        echo 'This is the about page. </br />';   
+    public function index(Route $route) {
+        echo 'This is the about page. </br />';
+		var_dump($route->getParams());
         $this->_other();
     }
 

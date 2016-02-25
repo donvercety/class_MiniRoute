@@ -1,6 +1,6 @@
 RewriteEngine On
 
-RewriteBase /projects/class_MiniRoute/
+RewriteBase /workspace/routes/
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
