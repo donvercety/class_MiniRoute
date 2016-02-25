@@ -2,7 +2,7 @@
 
 Version 2.1
 
-The value after the " / " makes a controller callsback. Which can be a separate class or a function. For
+The value after the " / " makes a controller callback. Which can be a separate class or a function. For
 example **http://mysite.com/contacts** will call the controller called **Contacts**. This controller can be a php Class or a simple function. This functionality is from [v1.1](https://github.com/donvercety/php.class.MiniRoute/archive/v1.1.zip). In version **2.0** the ability to target a specific method in the class is implemented and also the ability to receive url parameters in the callbacks. In version **2.1** the `$params` array is removed. Parameters are now reachable by the `Route` class instance `$route->getParams()`. By popular demand I added a way to reach the query string parameters `$route->getData()`. The default targeted method is **index()**, so if you have:
 
 
@@ -22,7 +22,7 @@ The params array, is an array that will contain all the parameters after the con
 ```
 http://mysite.com/home/map/1/NewYork
 ```
-This will execute **Home** controller **map()** method and it will pass two parameters to that method.
+This will execute **Home** controller **map()** method and it will pass two parameters.
 
 #### Main fiels:
 
@@ -74,8 +74,9 @@ $route->add('/about', 'About');
 $route->add('/contact', 'Contact');
 
 // when using functions
-$route->add('/map', function() {
+$route->add('/map', function() use ($route) {
     echo 'this is a func for map';
+	var_dump($route->getParams());
 });
 
 $route->submit();
