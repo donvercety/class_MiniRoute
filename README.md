@@ -27,7 +27,7 @@ This will execute **Home** controller **map()** method and it will pass two para
 #### Main fiels:
 
 - Route.php
-- .hthaccess
+- .htaccess
 
 #### Example files:
 
