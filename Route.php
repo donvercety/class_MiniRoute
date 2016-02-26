@@ -17,7 +17,6 @@ class Route {
             $_controller = array(),
             $_params     = NULL,
             $_getData    = NULL,
-            $_indexFile  = TRUE,
             $_match      = 0,
             $_method;
 
