@@ -67,7 +67,7 @@ Replace `/projects/php.class.MiniRoute/` with your site path.
 <?php
 
 // Including Route.php Class
-require ('Route.php');
+require ('lib/Route.php');
 
 // Including controllers
 require ('controllers/Home.php');
@@ -87,7 +87,6 @@ $route->add('/contact', 'Contact');
 // when using functions
 $route->add('/map', function() use ($route) {
     echo 'this is a func for map';
-    var_dump($route->getParams());
 });
 
 $route->submit();

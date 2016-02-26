@@ -1,7 +1,7 @@
 <?php
 
 /* Including Route.php Class */
-require ('Route.php');
+require ('lib/Route.php');
 require ('controllers/Home.php');
 require ('controllers/Contact.php');
 require ('controllers/About.php');
@@ -19,7 +19,12 @@ $route->add('/contact', 'Contact');
 // when using functions
 $route->add('/map', function() use ($route) {
     echo 'this is a func for map';
-	var_dump($route->getParams());
+	
+	// pretty parameters
+    var_dump($route->getParams());
+
+    // query string parameters
+    var_dump($route->getData());
 });
 
 //echo '<pre>';
