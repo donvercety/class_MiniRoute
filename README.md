@@ -6,8 +6,7 @@ The value after the `/` makes a controller callback. Which can be a separate cla
 example **http://mysite.com/contacts** will call the controller called `Contacts`. This controller can be a php Class or a simple function. 
 
 - Main functionality from [v1.1](https://github.com/donvercety/php.class.MiniRoute/archive/v1.1.zip).   
-
-- In [v2.0](https://github.com/donvercety/php.class.MiniRoute/releases/tag/v2.0) the ability to target a specific method in the class is implemented and also the ability to receive url parameters in the callbacks.  
+- In [v2.0](https://github.com/donvercety/php.class.MiniRoute/releases/tag/v2.0) the ability to target a specific method in the class is implemented and also the ability to receive url parameters in the callbacks.
 - In v2.1 the `$params` array is removed.  
   Parameters are now accessible by the `Route` class instance using `$route->getParams()`.  
   By popular demand I added a way to access the query string data `$route->getData()`.   
