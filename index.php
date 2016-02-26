@@ -7,7 +7,9 @@ require ('controllers/Contact.php');
 require ('controllers/About.php');
 
 /* Instantiating new $route Object */
-$route = new Route();
+$route = new Route([
+	"view_path" => "./views/"
+]);
 
 // when using Classes
 $route->add('/', 'Home');

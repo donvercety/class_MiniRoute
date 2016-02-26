@@ -1,6 +1,6 @@
-# php.class.MiniRoute v2.2
+# php.class.MiniRoute v2.3
 
-Version 2.2
+Version 2.3
 
 The value after the `/` makes a controller callback. Which can be a separate class or a function. For
 example **http://mysite.com/contacts** will call the controller called `Contacts`. This controller can be a php Class or a simple function. 
@@ -14,6 +14,8 @@ example **http://mysite.com/contacts** will call the controller called `Contacts
   By popular demand I added a way to access the query string data `$route->getData()`.   
 
 - In v.2.2 The routing algorithm is improved.  
+
+- In v.2.3 Render method implemented (`$route->render($template, $data)`), for rendering php view files.
 
 The default targeted method is `index()`, so if you have:
 ```
@@ -55,29 +57,31 @@ the need of the `/index.php/` file call in the URI.
 ##### File: .htaccess
 ```
 RewriteEngine On
-RewriteBase /projects/class_MiniRoute/
+RewriteBase /projects/php.class.MiniRoute/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
 RewriteRule ^(.+)$ index.php/$1 [QSA,L]
 ```
 
-Replace `/projects/class_MiniRoute/` with your site path.
+Replace `/projects/php.class.MiniRoute/` with your site path.
 
 ##### File: index.php
 ```php
 <?php
 
-/* Including Route.php Class */
+// Including Route.php Class
 require ('Route.php');
 
-/* Including controllers */
+// Including controllers
 require ('controllers/Home.php');
 require ('controllers/Contact.php');
 require ('controllers/About.php');
 
-/* Instantiating new $route Object */
-$route = new Route();
+// Instantiating new $route Object and set some settings
+$route = new Route([
+  "view_path" => "./views/"
+]);
 
 // when using Classes
 $route->add('/', 'Home');
@@ -87,7 +91,7 @@ $route->add('/contact', 'Contact');
 // when using functions
 $route->add('/map', function() use ($route) {
     echo 'this is a func for map';
-	var_dump($route->getParams());
+    var_dump($route->getParams());
 });
 
 $route->submit();
@@ -97,8 +101,8 @@ To be able to receive parameters in a Class method or function callback,
 you need to pass the instance of the Route class.
 
 ```php
-$route->add('/about', function() use ($route) {
-	// pretty parameters
+$route->add('/contact', function() use ($route) {
+    // pretty parameters
     $route->getParams();
 
     // query string parameters
@@ -107,15 +111,32 @@ $route->add('/about', function() use ($route) {
 ```
 
 ```php
-class About {
+class Contact {
 
-	function index(Route $route) {
-		// pretty parameters
+    function index(Route $route) {
+          // pretty parameters
         $route->getParams();
 
         // query string parameters
         $route->getData();
-	}
+    }
 }
 ```
 
+Use the render method to load php views
+```php
+class About {
+
+    public function index(Route $route) {
+
+        $params = $route->getParams();
+        $query  = $route->getData();
+
+        $route->render("about", [
+            "title"  => "About Page",
+            "params" => isset($params) ? $params : [],
+            "query"  => isset($query) ? $query : [],
+        ]);
+    }
+}
+```

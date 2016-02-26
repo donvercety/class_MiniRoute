@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Mini Route v2.2
+ * Mini Route v2.3
  *
  * Implements function or class callbacks for a specific url.
  * It implements beautiful urls with '/' separation for parameters.
@@ -18,6 +18,7 @@ class Route {
             $_params     = NULL,
             $_getData    = NULL,
             $_match      = 0,
+            $_viewPath   = "",
             $_method;
 
     /**
@@ -89,6 +90,29 @@ class Route {
         return isset($_SERVER["PATH_INFO"]) ? $_SERVER["PATH_INFO"] : "/";
     }
 
+    /**
+     * Set Document Root
+     * @param string $settings
+     */
+    public function settings($settings = array()) {
+        if (isset($settings["view_path"])) {
+            $this->_viewPath = $settings["view_path"];
+        }
+    }
+
+    /**
+     * Render View File
+     * @param  string $template
+     * @param  array  $data
+     */
+    public function render($template, $data = array()) {
+        $path = $this->_viewPath . $template . '.php';
+        if (file_exists($path)) {
+            extract($data);
+            require($path);
+        }
+    }
+
     // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
     // :: Not Found 404
     // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -119,14 +143,6 @@ class Route {
      */
     private function _setGetData($_get) {
         $this->_getData = $_get;
-    }
-
-    /**
-     * Set Document Root
-     * @param string $settings
-     */
-    public function settings($settings = array()) {
-        // TODO: settings implementation
     }
 
     /**
