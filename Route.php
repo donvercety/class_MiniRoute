@@ -21,16 +21,16 @@ class Route {
             $_match      = 0,
             $_method;
 
-	/**
-	 * Constructor, settings can be 
-	 * added when instantiating class
-	 * @param array $settings
-	 */
-	public function __construct($settings = array()) {
-		$this->settings($settings);
-	}
+    /**
+     * Constructor, settings can be 
+     * added when instantiating class
+     * @param array $settings
+     */
+    public function __construct($settings = array()) {
+        $this->settings($settings);
+    }
 
-	/**
+    /**
      * Building a collection of internal URL's to look for.
      *
      * @param string $uri
@@ -86,8 +86,8 @@ class Route {
      * Parse URI
      * @return string
      */
-    private function _parseURI() {		
-		return isset($_SERVER["PATH_INFO"]) ? $_SERVER["PATH_INFO"] : "/";
+    private function _parseURI() {      
+        return isset($_SERVER["PATH_INFO"]) ? $_SERVER["PATH_INFO"] : "/";
     }
 
     // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
