@@ -86,24 +86,8 @@ class Route {
      * Parse URI
      * @return string
      */
-    private function _parseURI() {
-		if (isset($_SERVER["PATH_INFO"])) {
-			if ($this->_indexFile) {
-				
-				$pathFull = $_SERVER["PATH_INFO"];
-				$indexLen = strlen($this->_indexFile);
-				
-				$path = "/" . substr($pathFull, $indexLen, strlen($pathFull));
-				
-			} else {
-				$path = $_SERVER["PATH_INFO"];
-			}
-			
-		} else {
-			$path = "/";
-		}
-		
-		return $path;
+    private function _parseURI() {		
+		return isset($_SERVER["PATH_INFO"]) ? $_SERVER["PATH_INFO"] : "/";
     }
 
     // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -143,9 +127,7 @@ class Route {
      * @param string $settings
      */
     public function settings($settings = array()) {
-        if (isset($settings["index"])) {
-            $this->_indexFile = $settings["index"];
-        }
+        // TODO: settings implementation
     }
 
     /**

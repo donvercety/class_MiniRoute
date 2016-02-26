@@ -52,7 +52,7 @@ RewriteBase /projects/class_MiniRoute/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-RewriteRule ^(.+)$ index.php?uri=$1 [QSA,L]
+RewriteRule ^(.+)$ index.php/$1 [QSA,L]
 ```
 
 Replace `/projects/class_MiniRoute/` with your site path.
