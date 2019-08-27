@@ -1,8 +1,7 @@
-RewriteEngine On
-
-RewriteBase /projects/php.class.MiniRoute/
-
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-RewriteRule ^(.+)$ index.php/$1 [QSA,L]
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /bau/
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.+)$ index.php/$1 [QSA,L]
+</IfModule>

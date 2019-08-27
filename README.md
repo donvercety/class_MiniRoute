@@ -5,13 +5,6 @@ Version 2.3
 The value after the `/` makes a controller callback. Which can be a separate class or a function. For
 example **http://mysite.com/contacts** will call the controller called `Contacts`. This controller can be a php Class or a simple function. 
 
-- Main functionality from [v1.1](https://github.com/donvercety/php.class.MiniRoute/archive/v1.1.zip).   
-- In [v2.0](https://github.com/donvercety/php.class.MiniRoute/releases/tag/v2.0) the ability to target a specific method in the class is implemented and also the ability to receive url parameters in the callbacks.
-- In v2.1 the `$params` array is removed.  
-  Parameters are now accessible by the `Route` class instance using `$route->getParams()`.  
-  By popular demand I added a way to access the query string data `$route->getData()`.   
-- In v.2.2 The routing algorithm is improved.  
-- In v.2.3 Render method implemented (`$route->render($template, $data)`), for rendering php view files.
 
 The default targeted method is `index()`, so if you have:
 ```
@@ -50,14 +43,28 @@ You may put **`Route.php`** wherever you want, but **`.htaccess`**
 must be in the site root folder! The `.htaccess` file is used to remove   
 the need of the `/index.php/` file call in the URI.
 
+**IMPORTANT** `.htaccess` works only on apache2 server with **rewrite** enabled.
+```sh
+sudo a2enmod rewrite
+```
+...also you need to enable `AllowOverride All`, in the `000-default.conf` file, add this after the line `DocumentRoot /var/www/html`. If your root html directory is something other, then write that:
+```
+<Directory "/var/www/html">
+	AllowOverride All
+</Directory>
+```
+
+After doing everything, restart apache using the command `sudo service apache2 restart`.
+
 ##### File: .htaccess
 ```
-RewriteEngine On
-RewriteBase /projects/php.class.MiniRoute/
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-RewriteRule ^(.+)$ index.php/$1 [QSA,L]
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /bau/
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.+)$ index.php/$1 [QSA,L]
+</IfModule>
 ```
 
 Replace `/projects/php.class.MiniRoute/` with your site path.
@@ -97,7 +104,8 @@ you need to pass the instance of the Route class.
 
 ```php
 $route->add('/contact', function() use ($route) {
-    // pretty parameters
+
+	// pretty parameters
     $route->getParams();
 
     // query string parameters
@@ -109,7 +117,8 @@ $route->add('/contact', function() use ($route) {
 class Contact {
 
     function index(Route $route) {
-          // pretty parameters
+
+		// pretty parameters
         $route->getParams();
 
         // query string parameters
@@ -123,14 +132,10 @@ Use the render method to load php views
 class About {
 
     public function index(Route $route) {
-
-        $params = $route->getParams();
-        $query  = $route->getData();
-
         $route->render("about", [
             "title"  => "About Page",
-            "params" => isset($params) ? $params : [],
-            "query"  => isset($query) ? $query : [],
+            "params" => $route->getParams(),
+            "query"  => $route->getData(),
         ]);
     }
 }

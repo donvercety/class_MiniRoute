@@ -13,10 +13,10 @@
  */
 class Route {
 
-    private $_uri        = array(),
-            $_controller = array(),
-            $_params     = NULL,
-            $_getData    = NULL,
+    private $_uri        = [],
+            $_controller = [],
+            $_params     = null,
+            $_getData    = null,
             $_match      = 0,
             $_viewPath   = "",
             $_method;
@@ -26,20 +26,20 @@ class Route {
      * added when instantiating class
      * @param array $settings
      */
-    public function __construct($settings = array()) {
+    public function __construct($settings = []) {
         $this->settings($settings);
     }
 
     /**
-     * Building a collection of internal URL's to look for.
+     * Building a collection of internal URLs to look for.
      *
      * @param string $uri
      * @param string $controller
      */
-    public function add($uri, $controller = NULL) {
+    public function add($uri, $controller = null) {
         $this->_uri[] = '/' . trim($uri, '/');
 
-        if($controller != NULL) {
+        if($controller != null) {
             $this->_controller[] = $controller;
         }
     }
@@ -49,35 +49,26 @@ class Route {
      */
     public function submit() {
         $this->_setGetData(filter_input_array(INPUT_GET));
-
-        $uriGetParam = $this->_parseURI();
-        $uriGetParam = explode('/', $uriGetParam);
+        $uriArr = explode('/', $this->_parseURI());
 
         // adding '/' to each array entry
-        foreach($uriGetParam as $param) {
-            $params[] = '/' . $param;
+        foreach($uriArr as $param) {
+            $params[] = "/{$param}";
         }
 
-        // Setting the class and method variables
-        $this->_method = isset($params[2]) ? ltrim($params[2], "/") : NULL;
+        $this->_method = isset($params[2]) ? ltrim($params[2], "/") : null;
 
-        foreach($this->_uri as $key => $value) {
-            if(preg_match("#^$value$#", $params[1])) {
+        foreach ($this->_uri as $key => $value) {
+            if (preg_match("#^$value$#", $params[1])) {
                 $this->_match = 1;
 
-                // if string then we call a php class
-                if(is_string($this->_controller[$key])) {
-                    $this->_callClassCallback($key, $params);
-
-                // else we assume it's a function callback
-                } else {
-                    $this->_callFunctionCallback($key, $params);
-                }
+                is_string($this->_controller[$key])
+                    ? $this->_callClassCallback($key, $params)
+					: $this->_callFunctionCallback($key, $params);
             }
         }
 
-        // if there is no match, load the 404 page
-        if (!$this->_match) {
+        if (! $this->_match) {
             $this->_notFound();
         }
     }
@@ -94,7 +85,7 @@ class Route {
      * Set Document Root
      * @param string $settings
      */
-    public function settings($settings = array()) {
+    public function settings($settings = []) {
         if (isset($settings["view_path"])) {
             $this->_viewPath = $settings["view_path"];
         }
@@ -105,9 +96,10 @@ class Route {
      * @param  string $template
      * @param  array  $data
      */
-    public function render($template, $data = array()) {
-        $path = $this->_viewPath . $template . '.php';
-        if (file_exists($path)) {
+    public function render($template, $data = []) {
+        $path = "{$this->_viewPath}{$template}.php";
+        
+		if (file_exists($path)) {
             extract($data);
             require($path);
         }
@@ -122,6 +114,7 @@ class Route {
      * @return void
      */
     private function _notFound() {
+		header('HTTP/1.1 404 Not Found');
         echo '404: Page not found!';
     }
 
@@ -131,18 +124,18 @@ class Route {
 
     /**
      * Set URI Parameters
-     * @param array $_params
+     * @param array $params
      */
-    private function _setParams($_params) {
-        $this->_params = $_params;
+    private function _setParams($params) {
+        $this->_params = $params;
     }
 
     /**
      * Set Query String Parameters
-     * @param array $_get
+     * @param array $get
      */
-    private function _setGetData($_get) {
-        $this->_getData = $_get;
+    private function _setGetData($get) {
+        $this->_getData = $get;
     }
 
     /**
@@ -168,53 +161,31 @@ class Route {
     /**
      * This method is called when we pass a string
      * as a second parameter in the add() function
-     * this means that we are trying to call a php class.
+     * this means that we are trying to call a class.
      *
      * @param  string $key      current iteration key
      * @param  array  $params   optional
      * @return void
      */
     private function _callClassCallback($key, $params) {
-        $count    = 1;
-        $values   = array();
-        $useClass = $this->_controller[$key]; // class name to be loaded
+        $count  = 0;
+		$values = [];
+        $class  = new $this->_controller[$key];
 
-        // if we have 2nd parametur we check if it is a method or a value
-        if (isset($params[2])) {
-            $class = new $useClass();
+		$i = 3;
 
-            // if method we get the values form the 3rd URI param
-            if(method_exists($class, $this->_method))  {
-                for ($i = 3; $i < count($params); $i++) {
-                    $values[$count] = trim($params[$i], '/');
-                    $count++;
-                }
-
-                $this->_setParams(count($values) ? $values : NULL);
-                call_user_func_array(array($class, $this->_method), array($this));
-
-            // if not we get the values form the 2nd URI param
-            } else {
-                for ($i = 2; $i < count($params); $i++) {
-                    $values[$count] = trim($params[$i], '/');
-                    $count++;
-                }
-
-                $this->_setParams(count($values) ? $values : NULL);
-                call_user_func_array(array($class, 'index'), array($this));
-            }
-
-        // if we dont have 2nd parametur we just load the class
-        } else {
-            for ($i = 2; $i < count($params); $i++) {
-                $values[$count] = trim( $params[$i], '/' );
-                $count++;
-            }
-
-            $class = new $useClass();
-            $this->_setParams(count($values) ? $values : NULL);
-            call_user_func_array(array($class, 'index'), array($this));
+        if (! method_exists($class, $this->_method)) {
+			$i = 2;
+			$this->_method = 'index';
         }
+
+		for (; $i < count($params); $i++) {
+			$values[$count] = trim($params[$i], '/');
+			$count++;
+		}
+
+		$this->_setParams($values);
+		call_user_func_array([$class, $this->_method], [$this]);
     }
 
     /**
@@ -226,15 +197,15 @@ class Route {
      * @return void
      */
     private function _callFunctionCallback($key, $params) {
-        $count  = 1;
-        $values = array();
+		$count  = 0;
+		$values = [];
 
         for ($i = 2; $i < count($params); $i++) {
             $values[$count] = trim($params[$i], '/');
-            $count++;
+			$count++;
         }
 
-        $this->_setParams(count($values) ? $values : NULL);
+        $this->_setParams($values);
         call_user_func($this->_controller[$key]);
     }
 }

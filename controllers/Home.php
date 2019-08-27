@@ -12,7 +12,7 @@ class Home {
     }
     
     protected function _homeOther($route) {
-        echo '<h3>This is the <code>_homeOther()</code> method bout, lolz!</h3>';
+        echo '<h3>This is the <code>_homeOther()</code> method, lolz!</h3>';
 		
 		echo "<code>Query String parameters:</code>";
         var_dump($route->getData());
