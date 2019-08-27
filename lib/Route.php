@@ -64,7 +64,7 @@ class Route {
 
                 is_string($this->_controller[$key])
                     ? $this->_callClassCallback($key, $params)
-					: $this->_callFunctionCallback($key, $params);
+                    : $this->_callFunctionCallback($key, $params);
             }
         }
 
@@ -99,7 +99,7 @@ class Route {
     public function render($template, $data = []) {
         $path = "{$this->_viewPath}{$template}.php";
         
-		if (file_exists($path)) {
+        if (file_exists($path)) {
             extract($data);
             require($path);
         }
@@ -114,7 +114,7 @@ class Route {
      * @return void
      */
     private function _notFound() {
-		header('HTTP/1.1 404 Not Found');
+        header('HTTP/1.1 404 Not Found');
         echo '404: Page not found!';
     }
 
@@ -169,23 +169,23 @@ class Route {
      */
     private function _callClassCallback($key, $params) {
         $count  = 0;
-		$values = [];
+        $values = [];
         $class  = new $this->_controller[$key];
 
-		$i = 3;
+        $i = 3;
 
         if (! method_exists($class, $this->_method)) {
-			$i = 2;
-			$this->_method = 'index';
+            $i = 2;
+            $this->_method = 'index';
         }
 
-		for (; $i < count($params); $i++) {
-			$values[$count] = trim($params[$i], '/');
-			$count++;
-		}
+        for (; $i < count($params); $i++) {
+            $values[$count] = trim($params[$i], '/');
+            $count++;
+        }
 
-		$this->_setParams($values);
-		call_user_func_array([$class, $this->_method], [$this]);
+        $this->_setParams($values);
+        call_user_func_array([$class, $this->_method], [$this]);
     }
 
     /**
@@ -197,12 +197,12 @@ class Route {
      * @return void
      */
     private function _callFunctionCallback($key, $params) {
-		$count  = 0;
-		$values = [];
+        $count  = 0;
+        $values = [];
 
         for ($i = 2; $i < count($params); $i++) {
             $values[$count] = trim($params[$i], '/');
-			$count++;
+            $count++;
         }
 
         $this->_setParams($values);

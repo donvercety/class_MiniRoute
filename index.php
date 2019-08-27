@@ -8,7 +8,7 @@ require ('controllers/About.php');
 
 /* Instantiating new $route Object */
 $route = new Route([
-	"view_path" => "./views/"
+    "view_path" => "./views/"
 ]);
 
 // when using Classes
@@ -19,8 +19,8 @@ $route->add('/contact', 'Contact');
 // when using functions
 $route->add('/map', function() use ($route) {
     echo 'this is a func for map';
-	
-	// pretty parameters
+    
+    // pretty parameters
     var_dump($route->getParams());
 
     // query string parameters
